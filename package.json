@@ -1,0 +1,34 @@
+{
+  "name": "artifact-link",
+  "version": "0.0.0",
+  "private": true,
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "format": "prettier --write '**/*.ts'",
+    "format-check": "prettier --check '**/*.ts'",
+    "package": "ncc build --source-map --license licenses.txt",
+    "all": "pnpm run build && pnpm run format && pnpm run package"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/beni69/artifact-link.git"
+  },
+  "keywords": [
+    "actions",
+    "artifact"
+  ],
+  "author": "beni69 (https://github.com/beni69)",
+  "license": "GPL-3.0",
+  "dependencies": {
+    "@actions/artifact": "^1.1.1",
+    "@actions/core": "^1.10.0",
+    "@actions/github": "^5.1.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.3.3",
+    "@vercel/ncc": "^0.36.1",
+    "prettier": "^2.8.8",
+    "typescript": "^5.1.6"
+  }
+}

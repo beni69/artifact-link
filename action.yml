@@ -1,0 +1,15 @@
+name: artifact-link
+description: automatically link your artifacts to your PR or commit comments
+author: beni69
+inputs:
+  token:
+    required: true
+    description: 'secrets.GITHUB_TOKEN'
+  summary:
+    required: false
+    description: whether to post a summary (enabled by default)
+    default: true
+
+runs:
+  using: 'node16'
+  main: 'dist/index.js'
