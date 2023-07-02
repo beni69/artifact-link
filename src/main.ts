@@ -1,6 +1,7 @@
 import * as core from "@actions/core";
 import * as github from "@actions/github";
 import { DownloadHttpClient } from "@actions/artifact/lib/internal/download-http-client";
+import { groupTable } from "./table";
 
 const SIG = "<!-- bot: beni69/artifact-link -->";
 
@@ -33,9 +34,18 @@ async function run(): Promise<void> {
 
         // construct markdown
         let md = `${SIG}\n### Artifacts\n\n[View all](${link})\n`;
-        for (const a of af) {
-            md += `- [${a.name}](${link}/${a.name}.zip)\n`;
-        }
+        const regex = core.getInput("group");
+        if (regex) {
+            md +=
+                groupTable(
+                    af.map(a => a.name),
+                    new RegExp(regex),
+                    x => `[Download](${link}/${x}.zip)`
+                ) + "\n";
+        } else
+            for (const a of af) {
+                md += `- [${a.name}](${link}/${a.name}.zip)\n`;
+            }
 
         // maybe add workflow summary
         const summary = core.getBooleanInput("summary");
