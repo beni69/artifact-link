@@ -1,6 +1,8 @@
 name: artifact-link
 description: automatically link your artifacts to your PR or commit comments
 author: beni69
+icon: external-link
+color: purple
 inputs:
   token:
     required: true
