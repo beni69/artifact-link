@@ -7,13 +7,13 @@ const SIG = "<!-- bot: beni69/artifact-link -->";
 
 const dbg = (thing: any, grp?: string) => {
     grp && core.startGroup(grp);
-    core.info(JSON.stringify(thing, undefined, 2));
+    core.debug(JSON.stringify(thing, undefined, 2));
     grp && core.endGroup();
 };
 
 async function run(): Promise<void> {
     try {
-        const token = core.getInput("token");
+        const token = core.getInput("token", { required: true });
         const octokit = github.getOctokit(token);
 
         dbg(github.context, "ctx");
@@ -35,6 +35,7 @@ async function run(): Promise<void> {
         // construct markdown
         let md = `${SIG}\n### Artifacts\n\n[View all](${link})\n`;
         const regex = core.getInput("group");
+        dbg(regex);
         if (regex) {
             md +=
                 groupTable(
@@ -47,59 +48,65 @@ async function run(): Promise<void> {
                 md += `- [${a.name}](${link}/${a.name}.zip)\n`;
             }
 
-        // maybe add workflow summary
+        // workflow summary
         const summary = core.getBooleanInput("summary");
         if (summary) core.summary.addRaw(md).write();
 
         // comment on commit
-        const cc = await octokit.rest.repos
-            .listCommentsForCommit({
-                owner,
-                repo,
-                commit_sha: sha,
-            })
-            .then(l => l.data.find(c => c.body.includes(SIG)));
-        dbg(cc);
-        if (cc)
-            await octokit.rest.repos.updateCommitComment({
-                owner,
-                repo,
-                comment_id: cc.id,
-                body: md,
-            });
-        else
-            await octokit.rest.repos.createCommitComment({
-                owner,
-                repo,
-                commit_sha: sha,
-                body: md,
-            });
-
-        // comment on pr
-        if (github.context.eventName.startsWith("pull_request")) {
-            const pr = github.context.payload.pull_request!.number;
-            const prc = await octokit.rest.issues
-                .listComments({
+        const docc = core.getBooleanInput("commit");
+        if (docc) {
+            const cc = await octokit.rest.repos
+                .listCommentsForCommit({
                     owner,
                     repo,
-                    issue_number: pr,
+                    commit_sha: sha,
                 })
-                .then(l => l.data.find(c => c.body?.includes(SIG)));
-            dbg(prc);
-            if (prc)
-                await octokit.rest.issues.updateComment({
+                .then(l => l.data.find(c => c.body.includes(SIG)));
+            dbg(cc);
+            if (cc)
+                await octokit.rest.repos.updateCommitComment({
                     owner,
                     repo,
-                    comment_id: prc.id,
+                    comment_id: cc.id,
                     body: md,
                 });
             else
-                await octokit.rest.issues.createComment({
+                await octokit.rest.repos.createCommitComment({
                     owner,
                     repo,
-                    issue_number: pr,
+                    commit_sha: sha,
                     body: md,
                 });
+        }
+
+        // comment on pr
+        const dopr = core.getBooleanInput("pr");
+        if (dopr) {
+            if (github.context.eventName.startsWith("pull_request")) {
+                const pr = github.context.payload.pull_request!.number;
+                const prc = await octokit.rest.issues
+                    .listComments({
+                        owner,
+                        repo,
+                        issue_number: pr,
+                    })
+                    .then(l => l.data.find(c => c.body?.includes(SIG)));
+                dbg(prc);
+                if (prc)
+                    await octokit.rest.issues.updateComment({
+                        owner,
+                        repo,
+                        comment_id: prc.id,
+                        body: md,
+                    });
+                else
+                    await octokit.rest.issues.createComment({
+                        owner,
+                        repo,
+                        issue_number: pr,
+                        body: md,
+                    });
+            }
         }
     } catch (error) {
         if (error instanceof Error) core.setFailed(error.message);

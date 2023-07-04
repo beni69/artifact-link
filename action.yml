@@ -11,6 +11,14 @@ inputs:
     required: false
     description: whether to post a summary (enabled by default)
     default: true
+  commit:
+    required: false
+    description: whether to post a commit comment (enabled by default)
+    default: true
+  pr:
+    required: false
+    description: whether to post a pr comment (enabled by default)
+    default: true
   group:
     required: false
     description: a regex to use to create a table instead of a list in the output (see README)

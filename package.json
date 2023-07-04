@@ -2,7 +2,7 @@
   "name": "artifact-link",
   "version": "0.0.0",
   "private": true,
-  "main": "dist/index.js",
+  "main": "lib/main.js",
   "scripts": {
     "build": "tsc",
     "format": "prettier --write '**/*.ts'",
