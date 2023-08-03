@@ -20,8 +20,8 @@ dependencies:
 
 devDependencies:
   '@types/node':
-    specifier: ^20.4.4
-    version: 20.4.4
+    specifier: ^20.4.6
+    version: 20.4.6
   '@vercel/ncc':
     specifier: ^0.36.1
     version: 0.36.1
@@ -155,8 +155,8 @@ packages:
       '@octokit/openapi-types': 12.11.0
     dev: false
 
-  /@types/node@20.4.4:
-    resolution: {integrity: sha512-CukZhumInROvLq3+b5gLev+vgpsIqC2D0deQr/yS1WnxvmYLlJXZpaQrQiseMY+6xusl79E04UjWoqyr+t1/Ew==}
+  /@types/node@20.4.6:
+    resolution: {integrity: sha512-q0RkvNgMweWWIvSMDiXhflGUKMdIxBo2M2tYM/0kEGDueQByFzK4KZAgu5YHGFNxziTlppNpTIBcqHQAxlfHdA==}
     dev: true
 
   /@vercel/ncc@0.36.1:
