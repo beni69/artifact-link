@@ -1,7 +1,7 @@
 import * as core from "@actions/core";
 import * as github from "@actions/github";
-import { DownloadHttpClient } from "@actions/artifact/lib/internal/download-http-client";
 import { groupTable } from "./table";
+import { DefaultArtifactClient } from "@actions/artifact"
 
 const SIG = "<!-- bot: beni69/artifact-link -->";
 
@@ -15,6 +15,7 @@ async function run(): Promise<void> {
     try {
         const token = core.getInput("token", { required: true });
         const octokit = github.getOctokit(token);
+        const artifact = new DefaultArtifactClient();
 
         dbg(github.context, "ctx");
 
@@ -26,7 +27,7 @@ async function run(): Promise<void> {
         const link = `https://nightly.link/${owner}/${repo}/actions/runs/${runId}`;
         dbg(link);
 
-        const { value: af } = await new DownloadHttpClient().listArtifacts();
+        const { artifacts: af } = await artifact.listArtifacts();
         dbg(af, "artifacts");
         if (!af.length) {
             return core.error(`No artifacts found`);
