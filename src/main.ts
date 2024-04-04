@@ -1,7 +1,7 @@
 import * as core from "@actions/core";
 import * as github from "@actions/github";
 import { groupTable } from "./table";
-import { DefaultArtifactClient } from "@actions/artifact"
+import { DefaultArtifactClient } from "@actions/artifact";
 
 const SIG = "<!-- bot: beni69/artifact-link -->";
 
