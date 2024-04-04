@@ -22,7 +22,7 @@ jobs:
   build:
     steps:
       - ... # run whatever build tool
-      - uses: actions/upload-artifact@v3 # upload the results
+      - uses: actions/upload-artifact@v4 # upload the results
   link:
     needs: build # make sure the artifacts are uploaded first
     steps:
