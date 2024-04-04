@@ -35,7 +35,7 @@ async function run(): Promise<void> {
 
         // construct markdown
         let md = `${SIG}\n### Artifacts\n\n`;
-        af.length > 1 && `[View all](${link})\n`;
+        if (af.length > 1) md += `[View all](${link})\n`;
         const regex = core.getInput("group");
         dbg(regex);
         if (regex) {
