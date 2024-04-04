@@ -25,6 +25,9 @@ jobs:
       - uses: actions/upload-artifact@v4 # upload the results
   link:
     needs: build # make sure the artifacts are uploaded first
+    permissions:
+        contents: write # for commenting on your commit
+        pull-requests: write # for commenting on your pr
     steps:
       - uses: beni69/artifact-link@v1
         with:
