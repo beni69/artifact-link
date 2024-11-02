@@ -24,7 +24,7 @@
     "@actions/artifact": "^2.1.11",
     "@actions/core": "^1.11.1",
     "@actions/github": "^6.0.0",
-    "markdown-table": "^3.0.3"
+    "markdown-table": "^3.0.4"
   },
   "devDependencies": {
     "@types/node": "^22.8.6",
